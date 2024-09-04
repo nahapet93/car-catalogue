@@ -3,17 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\BrandResource;
-use App\Models\Brand;
+use App\Interfaces\BrandRepositoryInterface;
 use App\Http\Requests\BrandRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class BrandController extends Controller
 {
+    public function __construct(private readonly BrandRepositoryInterface $brandRepository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): ResourceCollection
     {
-        return BrandResource::collection(Brand::all());
+        return $this->brandRepository->list();
     }
 
     /**
@@ -21,23 +27,14 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request): BrandResource
     {
-        $brand = Brand::create([
-            'name' => $request->name
-        ]);
-
-        return BrandResource::make($brand);
+        return $this->brandRepository->store($request);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(BrandRequest $request, int $id)
+    public function update(BrandRequest $request, int $id): JsonResponse|BrandResource
     {
-        $brand = Brand::find($id);
-        $brand->update([
-            'name' => $request->name
-        ]);
-
-        return BrandResource::make($brand);
+        return $this->brandRepository->update($request, $id);
     }
 }

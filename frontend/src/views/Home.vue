@@ -39,40 +39,45 @@ const year = ref('');
 const brandId = ref(null);
 const exteriorColorId = ref(null);
 const interiorColorId = ref(null);
+const params = ref({});
 
-const response = await apiClient.get('/models');
-const modelObject = response.data.data.map(model => ({
-  value: model.id,
-  title: Object.values(model).slice(1).reduce((prop, acc) => `${prop}, ${acc}`),
-  data: model
-}));
+const loadModels = async (params) => {
+  const response = await apiClient.get('/models', {params: params.value});
+  models.value = response.data.data.map(model => ({
+    value: model.id,
+    title: Object.values(model).slice(1).reduce((prop, acc) => `${prop}, ${acc}`),
+    data: model
+  }));
+}
 
-models.value = modelObject;
+loadModels(params);
 
 watch(
     [brandId, exteriorColorId, interiorColorId, name, year],
-    ([newBrandId, newExteriorColorId, newInteriorColorId, newName, newYear]) => {
-      models.value = modelObject;
+    async ([newBrandId, newExteriorColorId, newInteriorColorId, newName, newYear]) => {
+      params.value = {};
 
       if (newBrandId) {
-        models.value = models.value.filter(model => model.data.brandId === newBrandId);
+        params.value = {brandId: newBrandId, ...params.value};
       }
 
       if (newExteriorColorId) {
-        models.value = models.value.filter(model => model.data.exteriorColorId === newExteriorColorId);
+        params.value = {exteriorColorId: newExteriorColorId, ...params.value};
       }
 
       if (newInteriorColorId) {
-        models.value = models.value.filter(model => model.data.interiorColorId === newInteriorColorId);
+        params.value = {interiorColorId: newInteriorColorId, ...params.value};
       }
 
       if (newName) {
-        models.value = models.value.filter(model => model.data.name.startsWith(newName));
+        params.value = {name: newName, ...params.value};
       }
 
       if (newYear) {
-        models.value = models.value.filter(model => model.data.year === newYear);
+        params.value = {year: newYear, ...params.value};
       }
+
+      await loadModels(params);
     }
 );
 

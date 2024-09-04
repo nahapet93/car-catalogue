@@ -3,61 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CarModelResource;
-use App\Models\CarModel;
+use App\Interfaces\CarModelRepositoryInterface;
 use App\Http\Requests\CarModelRequest;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CarModelController extends Controller
 {
+    public function __construct(private readonly CarModelRepositoryInterface $carModelRepository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): ResourceCollection
     {
-        return CarModelResource::collection(CarModel::with([
-            'brand',
-            'exteriorColor',
-            'interiorColor',
-            'engineType',
-            'transmissionType',
-        ])->get());
+        return $this->carModelRepository->list($request);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CarModelRequest $request)
+    public function store(CarModelRequest $request): CarModelResource
     {
-        $model = CarModel::create([
-            'name' => $request->name,
-            'year' => $request->year,
-            'price' => $request->price,
-            'brand_id' => $request->brandId,
-            'engine_type_id' => $request->engineTypeId,
-            'transmission_type_id' => $request->transmissionTypeId,
-            'exterior_color_id' => $request->exteriorColorId,
-            'interior_color_id' => $request->interiorColorId,
-        ]);
-
-        return CarModelResource::make($model);
+        return $this->carModelRepository->store($request);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CarModelRequest $request, int $id)
+    public function update(CarModelRequest $request, int $id): JsonResponse|CarModelResource
     {
-        $model = CarModel::find($id);
-        $model->update([
-            'name' => $request->name,
-            'year' => $request->year,
-            'price' => $request->price,
-            'brand_id' => $request->brandId,
-            'engine_type_id' => $request->engineTypeId,
-            'transmission_type_id' => $request->transmissionTypeId,
-            'exterior_color_id' => $request->exteriorColorId,
-            'interior_color_id' => $request->interiorColorId,
-        ]);
-
-        return CarModelResource::make($model);
+        return $this->carModelRepository->update($request, $id);
     }
 }
