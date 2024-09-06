@@ -25,14 +25,16 @@
     <v-card fluid>
       <v-card-title>Models</v-card-title>
       <v-card-text v-if="!models.length">No models found</v-card-text>
-      <v-list v-else :items="models"></v-list>
+      <template v-else>
+        <v-list :items="models"></v-list>
 
-      <v-pagination
-          v-model="page"
-          :length="totalPages"
-          :total-visible="5"
-          color="primary"
-      ></v-pagination>
+        <v-pagination
+            v-model="page"
+            :length="totalPages"
+            :total-visible="5"
+            color="primary"
+        ></v-pagination>
+      </template>
     </v-card>
   </v-container>
 </template>
