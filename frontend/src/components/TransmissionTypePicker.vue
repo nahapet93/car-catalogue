@@ -2,10 +2,14 @@
 import {ref} from "vue";
 import apiClient from "@/plugins/axios";
 
-const transmissionTypes = ref([]);
+const transmissionTypes = ref([] as any[]);
 
 const response = await apiClient.get('/transmission-types');
-transmissionTypes.value = response.data.map((transmissionType: any) => ({value: transmissionType.id, title: transmissionType.name}));
+transmissionTypes.value = [
+  {value: null, title: 'Choose transmission type'},
+  ...response.data.map((transmissionType: any) => ({value: transmissionType.id, title: transmissionType.name}))
+];
+
 </script>
 
 <template>

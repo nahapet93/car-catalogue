@@ -32,7 +32,7 @@ const createBrand = async () => {
 
 <template>
   <v-container class="py-5">
-    <v-card class="mx-auto pa-5" width="300">
+    <v-card class="mx-auto pa-5" max-width="600">
       <v-alert v-if="error" type="error" dismissible>{{ error }}</v-alert>
       <v-form @submit.prevent="createBrand">
         <v-text-field v-model="name" label="Name" type="text" required></v-text-field>

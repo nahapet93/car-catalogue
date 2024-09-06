@@ -1,7 +1,7 @@
 <!-- src/views/Login.vue -->
 <template>
-  <v-container class="d-flex justify-center align-center fill-height">
-    <v-card class="pa-5" max-width="400">
+  <v-container class="py-5">
+    <v-card class="mx-auto pa-5" max-width="600">
       <v-card-title class="text-h5">Login</v-card-title>
       <v-alert v-if="error" type="error" dismissible>{{ error }}</v-alert>
       <v-form @submit.prevent="login">

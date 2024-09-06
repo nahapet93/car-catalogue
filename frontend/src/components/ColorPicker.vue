@@ -2,11 +2,15 @@
 import {ref} from "vue";
 import apiClient from "@/plugins/axios";
 
-const colors = ref([]);
+const colors = ref([] as any[]);
 const props = defineProps(['label']);
 
 const response = await apiClient.get('/colors');
-colors.value = response.data.map((color: any) => ({value: color.id, title: color.name}));
+colors.value = [
+  {value: null, title: 'Choose color'},
+  ...response.data.map((color: any) => ({value: color.id, title: color.name}))
+];
+
 </script>
 
 <template>

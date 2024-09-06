@@ -2,10 +2,14 @@
 import {ref} from "vue";
 import apiClient from "@/plugins/axios";
 
-const engineTypes = ref([]);
+const engineTypes = ref([] as any[]);
 
 const response = await apiClient.get('/engine-types');
-engineTypes.value = response.data.map((engineType: any) => ({value: engineType.id, title: engineType.name}));
+engineTypes.value = [
+  {value: null, title: 'Choose engine type'},
+  ...response.data.map((engineType: any) => ({value: engineType.id, title: engineType.name}))
+];
+
 </script>
 
 <template>

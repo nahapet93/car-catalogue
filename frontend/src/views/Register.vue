@@ -1,7 +1,7 @@
 <!-- src/views/Register.vue -->
 <template>
-  <v-container class="d-flex justify-center align-center fill-height">
-    <v-card class="pa-5" max-width="400">
+  <v-container class="py-5">
+    <v-card class="mx-auto pa-5" max-width="600">
       <v-card-title class="text-h5">Register</v-card-title>
       <v-alert v-if="error" type="error" dismissible>{{ error }}</v-alert>
       <v-form @submit.prevent="register">
@@ -54,8 +54,5 @@ const register = async () => {
 </script>
 
 <style scoped>
-.v-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-}
+
 </style>

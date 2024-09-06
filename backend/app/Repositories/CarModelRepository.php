@@ -42,7 +42,11 @@ class CarModelRepository implements CarModelRepositoryInterface {
             $query->where(['year' => $request->get('year')]);
         }
 
-        return CarModelResource::collection($query->get());
+        if ($request->get('price')) {
+            $query->where(['price' => $request->get('price')]);
+        }
+
+        return CarModelResource::collection($query->paginate(5));
     }
 
     public function store(CarModelRequest $request): CarModelResource

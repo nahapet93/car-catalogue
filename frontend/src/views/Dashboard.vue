@@ -3,7 +3,8 @@
   <v-container class="py-5">
     <v-card>
       <v-card-title>Brands</v-card-title>
-      <v-list :items="brands"></v-list>
+      <v-card-text v-if="!brands.length">No brands found</v-card-text>
+      <v-list v-else :items="brands"></v-list>
       <v-card-actions>
         <v-btn color="primary" class="mt-4" to="/create-brand">Create brand</v-btn>
         <v-btn color="primary" class="mt-4" to="/create-model">Create model</v-btn>

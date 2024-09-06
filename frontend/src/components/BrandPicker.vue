@@ -2,10 +2,13 @@
 import {ref} from "vue";
 import apiClient from "@/plugins/axios";
 
-const brands = ref([]);
+const brands = ref([] as any[]);
 
 const response = await apiClient.get('/brands');
-brands.value = response.data.data.map((brand: any) => ({value: brand.id, title: brand.name}));
+brands.value = [
+  {value: null, title: 'Choose brand'},
+  ...response.data.data.map((brand: any) => ({value: brand.id, title: brand.name}))
+];
 
 </script>
 

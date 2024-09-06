@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::get('/brands', [BrandController::class, 'index']);
 Route::get('/models', [CarModelController::class, 'index']);
@@ -18,7 +19,6 @@ Route::get('/engine-types', fn () => EngineType::all());
 Route::get('/transmission-types', fn () => TransmissionType::all());
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/brands', [BrandController::class, 'store']);
     Route::put('/brands/{id}', [BrandController::class, 'update']);
 
